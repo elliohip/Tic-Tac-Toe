@@ -1,0 +1,24 @@
+header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+main {
+    display: grid;
+    grid-template-rows: 1fr 4fr 1fr;
+}
+
+#game {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-rows: repeat(3, minmax(100px, 1fr));
+
+}
+
+.game-board #game{
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-rows: repeat(3, minmax(100px, 1fr));
+}
