@@ -19,7 +19,10 @@ class BoardPiece {
         this.root.style.borderStyle = "solid";
         this.root.style.borderColor = "black";
 
-        this.root.style.fontSize = "";
+        this.root.style.fontSize = "30pt";
+        this.root.style.alignContent = "center";
+        this.root.style.justifyContent = "center";
+        this.root.addEventListener("click", () => {this.setPlayer(this.player)});
 
         document.getElementById("game").appendChild(this.root);
     }
