@@ -72,6 +72,8 @@ class GameBoard {
 
         this.items = [];
 
+        this.canMakeGrid = true;
+
 
         this.player = mainPlayer;
         this.computer = player(undefined);
@@ -101,7 +103,7 @@ class GameBoard {
             this.parent.appendChild(piece.root);
         }
 
-    
+        canMakeGrid = false;
     }
 
     addListeners() {
@@ -110,13 +112,13 @@ class GameBoard {
             p = this.items[i];
 
             console.log("item added");
-            p.root.addEventListener('click', this.pieceListener);
+            p.root.addEventListener('click', (e) => {this.pieceListener(e, this.player)});
         }
     }
 
-    pieceListener(e) {
-        
-        e.target.innerHTML = this.player.playerChar;
+    pieceListener(e, player) {
+
+        e.target.innerHTML = player.playerChar;
 
         this.controller.move(this.items);
     }
@@ -132,6 +134,7 @@ class Runner {
         document.getElementById("x-character").addEventListener('click', (e) => {
             this.player.setPlayer(e.target.innerHTML);
         });
+        
         document.getElementById("o-character").addEventListener('click', (e) => {
             this.player.setPlayer(e.target.innerHTML);
         });
