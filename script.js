@@ -49,15 +49,18 @@ class GameController {
 
     /**
      * 
-     * @param {*} e 
-     * @param {*} board board array of items
+     *
+     * @param {GameBoard} board board array of items
+     * @param {String} computer char for computer piece
      */
-    move(board) {
+    move(board, computer) {
         // this.player.move(e.target);
 
-        let random = Math.random() * 9;
+        let random = Math.floor(Math.random() * 8);
+        let randPiece = board[random];
 
-        board[random].root.innerHTML = this.computer.playerChar;
+        randPiece.root.innerHTML = computer;
+        //randPiece.innerHTML = computer;
 
     }
 
@@ -103,7 +106,7 @@ class GameBoard {
             this.parent.appendChild(piece.root);
         }
 
-        canMakeGrid = false;
+        this.canMakeGrid = false;
     }
 
     addListeners() {
@@ -112,15 +115,15 @@ class GameBoard {
             p = this.items[i];
 
             console.log("item added");
-            p.root.addEventListener('click', (e) => {this.pieceListener(e, this.player)});
+            p.root.addEventListener('click', (e) => {this.pieceListener(e, this.player, this.computer)});
         }
     }
 
-    pieceListener(e, player) {
+    pieceListener(e, player, computer) {
 
         e.target.innerHTML = player.playerChar;
 
-        this.controller.move(this.items);
+        this.controller.move(this.items, computer.playerChar);
     }
 
 }
