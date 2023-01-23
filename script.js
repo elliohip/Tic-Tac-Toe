@@ -70,7 +70,7 @@ class GameController {
                 break;
             }
         }
-        
+
         if (randPiece.root.innerHTML == "") {
             randPiece.root.innerHTML = computer;
             
@@ -80,6 +80,81 @@ class GameController {
         //randPiece.innerHTML = computer;
 
         
+    }
+
+    checkWin(board) {
+
+    }
+
+    checkRow(board) {
+
+        let count = 0;
+        let piece = board[0];
+
+        let rows = [[],[],[]];
+
+        let r = 0;
+        for(let i = 0; i < board.length; i++) {
+            
+            if (i < 3) {
+                rows[0][r] = board[i];
+
+                r++;
+                if (r == 3) {
+                    r = 0;
+                }
+            }
+            if (i < 6) {
+                rows[1][r] = board[i];
+
+                r++;
+
+                if (r == 3) {
+                    r = 0;
+                }
+            }
+            if (i < 9) {
+                rows[2][r] = board[i];
+
+                r++;
+
+                if (r == 3) {
+                    r = 0;
+                    break;
+                }
+            }
+
+
+        }
+
+        let playerCount = 0;
+        let computerCount = 0;
+
+        for (let i = 0; i < 3; i++) {
+            for (let p in rows[i]) {
+                if (p.root.innerHTML == this.player.playerChar) {
+                    playerCount++;
+                }
+                if (p.root.innerHTML == this.computer.playerChar) {
+                    computerCount++;
+                }
+            }
+        }
+
+        if (computerCount == 3) {
+            return "You Lose";
+        }
+        else if (playerCount == 3) {
+            return "You Win";
+        }
+    }
+    
+    checkColumn(board) {
+
+    }
+
+    checkDiagonal(board) {
+
     }
 
     
