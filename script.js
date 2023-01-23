@@ -59,13 +59,21 @@ class GameController {
         let random = Math.floor(Math.random() * 8);
         let randPiece = board[random];
 
-        while (randPiece.root.innerHTML.length != 0) {
+        
+
+        while (randPiece.root.innerHTML != 0) {
             random = Math.floor(Math.random() * 8);
             randPiece = board[random];
 
             if (randPiece.root.innerHTML == "") {
                 randPiece.root.innerHTML = computer;
+                break;
             }
+        }
+        
+        if (randPiece.root.innerHTML == "") {
+            randPiece.root.innerHTML = computer;
+            
         }
         
 
