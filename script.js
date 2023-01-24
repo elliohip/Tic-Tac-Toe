@@ -139,6 +139,8 @@ class GameController {
                     computerCount++;
                 }
             }
+            playerCount = 0;
+            computerCount = 0;
         }
 
         if (computerCount == 3) {
@@ -151,10 +153,155 @@ class GameController {
     
     checkColumn(board) {
 
+        let count = 0;
+        let piece = board[0];
+
+        let columns = [[],[],[]];
+
+        let c1 = 0;
+        let c2 = 0;
+        let c3 = 0;
+        for(let i = 0; i < board.length; i++) {
+            
+            if ((i % 3) == 0) {
+                columns[0][c1] = board[i];
+
+                c1++;
+                if (c1 == 3) {
+                    c1 = 0;
+                }
+            }
+            if ((i % 3) == 1) {
+                columns[1][c2] = board[i];
+
+                c2++;
+
+                if (c2 == 3) {
+                    c2 = 0;
+                }
+            }
+            if ((i % 3) == 2) {
+                columns[2][c3] = board[i];
+
+                c3++;
+
+                if (r == 3) {
+                    c3 = 0;
+                    break;
+                }
+            }
+
+
+        }
+
+
+        let playerCount = 0;
+        let computerCount = 0;
+
+        for (let i = 0; i < 3; i++) {
+            for (let p in columns[i]) {
+                if (p.root.innerHTML == this.player.playerChar) {
+                    playerCount++;
+                }
+                if (p.root.innerHTML == this.computer.playerChar) {
+                    computerCount++;
+                }
+            }
+            playerCount = 0;
+            computerCount = 0;
+        }
+
+        if (computerCount == 3) {
+            return "You Lose";
+        }
+        else if (playerCount == 3) {
+            return "You Win";
+        }
+
+        
     }
 
+    /**
+     * 
+     * 
+     * @param {Array} board array of board objects
+     */
     checkDiagonal(board) {
+        let countLeftPlayer = 0;
+        let countRightPlayer = 0;
 
+        let countLeftComputer = 0;
+        let countRightComputer = 0;
+
+        for(let i = 0; i < board.length; i++) {
+            if (i == 0) {
+                if (board[i].root.innerHTML == this.player.playerChar) {
+                    countRightPlayer++;
+                }
+                else if (board[i].root.innerHTML == this.computer.playerChar) {
+                    countRightComputer++;
+                }
+                
+            }
+            
+            if (i == 2) {
+                if (board[i].root.innerHTML == this.player.playerChar) {
+                    countLeftPlayer++;
+                }
+                else if (board[i].root.innerHTML == this.computer.playerChar) {
+                    countLeftComputer++;
+                }
+                
+            }
+
+            if (i == 4) {
+
+                if (board[i].root.innerHTML == this.player.playerChar) {
+                    countLeftPlayer++;
+                }
+                else if (board[i].root.innerHTML == this.computer.playerChar) {
+                    countLeftComputer++;
+                }
+
+                if (board[i].root.innerHTML == this.player.playerChar) {
+                    countRightPlayer++;
+                }
+                else if (board[i].root.innerHTML == this.computer.playerChar) {
+                    countRightComputer++;
+                }
+                
+            }
+            if (i == 6) {
+                if (board[i].root.innerHTML == this.player.playerChar) {
+                    countLeftPlayer++;
+                }
+                else if (board[i].root.innerHTML == this.computer.playerChar) {
+                    countLeftComputer++;
+                }
+            }
+            if (i == 8) {
+                if (board[i].root.innerHTML == this.player.playerChar) {
+                    countRightPlayer++;
+                }
+                else if (board[i].root.innerHTML == this.computer.playerChar) {
+                    countRightComputer++;
+                }
+            }
+        }
+
+        if (countLeftPlayer == 3) {
+            console.log('you win');
+            return "you win";
+        } else if (countRightPlayer == 3) {
+            console.log('you win');
+            return "you win";
+        } else if (countLeftComputer == 3) {
+            console.log('you lose');
+            return "you lose";
+        } else if (countLeftComputer == 3) {
+            console.log('you lose');
+            return "you lose";
+        }
     }
 
     
