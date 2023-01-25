@@ -75,6 +75,8 @@ class GameController {
             randPiece.root.innerHTML = computer;
             
         }
+
+        this.checkWin(board);
         
 
         //randPiece.innerHTML = computer;
@@ -83,7 +85,9 @@ class GameController {
     }
 
     checkWin(board) {
-
+        this.checkColumn(board);
+        this.checkRow(board);
+        this.checkDiagonal(board);
     }
 
     checkRow(board) {
@@ -131,16 +135,14 @@ class GameController {
         let computerCount = 0;
 
         for (let i = 0; i < 3; i++) {
-            for (let p in rows[i]) {
+            rows[i].forEach((p) => {
                 if (p.root.innerHTML == this.player.playerChar) {
                     playerCount++;
                 }
                 if (p.root.innerHTML == this.computer.playerChar) {
                     computerCount++;
                 }
-            }
-            playerCount = 0;
-            computerCount = 0;
+            });
         }
 
         if (computerCount == 3) {
@@ -154,7 +156,7 @@ class GameController {
     checkColumn(board) {
 
         let count = 0;
-        let piece = board[0];
+        
 
         let columns = [[],[],[]];
 
@@ -171,7 +173,7 @@ class GameController {
                     c1 = 0;
                 }
             }
-            if ((i % 3) == 1) {
+            else if ((i % 3) == 1) {
                 columns[1][c2] = board[i];
 
                 c2++;
@@ -180,12 +182,12 @@ class GameController {
                     c2 = 0;
                 }
             }
-            if ((i % 3) == 2) {
+            else if ((i % 3) == 2) {
                 columns[2][c3] = board[i];
 
                 c3++;
 
-                if (r == 3) {
+                if (c3 == 3) {
                     c3 = 0;
                     break;
                 }
@@ -199,14 +201,15 @@ class GameController {
         let computerCount = 0;
 
         for (let i = 0; i < 3; i++) {
-            for (let p in columns[i]) {
+            columns[i].forEach((p) => {
                 if (p.root.innerHTML == this.player.playerChar) {
                     playerCount++;
                 }
                 if (p.root.innerHTML == this.computer.playerChar) {
                     computerCount++;
                 }
-            }
+            });
+            
             playerCount = 0;
             computerCount = 0;
         }
