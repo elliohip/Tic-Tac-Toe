@@ -104,28 +104,24 @@ class GameController {
                 rows[0][r] = board[i];
 
                 r++;
-                if (r == 3) {
-                    r = 0;
-                }
+                
             }
-            if (i < 6) {
+            else if (i < 6) {
                 rows[1][r] = board[i];
 
                 r++;
 
-                if (r == 3) {
-                    r = 0;
-                }
+                
             }
-            if (i < 9) {
+            else if (i < 9) {
                 rows[2][r] = board[i];
 
                 r++;
 
-                if (r == 3) {
-                    r = 0;
-                    break;
-                }
+                
+            }
+            if (r == 3) {
+                r = 0;
             }
 
 
@@ -146,9 +142,11 @@ class GameController {
         }
 
         if (computerCount == 3) {
+            console.log("you lose");
             return "You Lose";
         }
         else if (playerCount == 3) {
+            console.log("you win");
             return "You Win";
         }
     }
@@ -247,7 +245,7 @@ class GameController {
                 
             }
             
-            if (i == 2) {
+            else if (i == 2) {
                 if (board[i].root.innerHTML == this.player.playerChar) {
                     countLeftPlayer++;
                 }
@@ -257,7 +255,7 @@ class GameController {
                 
             }
 
-            if (i == 4) {
+            else if (i == 4) {
 
                 if (board[i].root.innerHTML == this.player.playerChar) {
                     countLeftPlayer++;
@@ -274,7 +272,7 @@ class GameController {
                 }
                 
             }
-            if (i == 6) {
+            else if (i == 6) {
                 if (board[i].root.innerHTML == this.player.playerChar) {
                     countLeftPlayer++;
                 }
@@ -282,7 +280,7 @@ class GameController {
                     countLeftComputer++;
                 }
             }
-            if (i == 8) {
+            else if (i == 8) {
                 if (board[i].root.innerHTML == this.player.playerChar) {
                     countRightPlayer++;
                 }
