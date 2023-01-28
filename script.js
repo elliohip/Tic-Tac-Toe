@@ -130,25 +130,34 @@ class GameController {
         let playerCount = 0;
         let computerCount = 0;
 
-        for (let i = 0; i < 3; i++) {
-            rows[i].forEach((p) => {
-                if (p.root.innerHTML == this.player.playerChar) {
-                    playerCount++;
-                }
-                if (p.root.innerHTML == this.computer.playerChar) {
-                    computerCount++;
-                }
-            });
-        }
+        let p;
+        for (let i = 0; i < rows.length; i++) {
+            for(let j = 0; j < rows[i].length; j++) {
 
-        if (computerCount == 3) {
+                if (playerCount != 3 && computerCount != 3) {
+                    p = rows[i][j]
+                    if (p.root.innerHTML == this.player.playerChar) {
+                        playerCount++;
+                    }
+                    if (p.root.innerHTML == this.computer.playerChar) {
+                        computerCount++;
+                    }
+                }
+            }
+            if (computerCount == 3) {
             console.log("you lose");
             return "You Lose";
+            }
+            else if (playerCount == 3) {
+                console.log("you win");
+                return "You Win";
+            }
+
+            playerCount = 0;
+            computerCount = 0;
         }
-        else if (playerCount == 3) {
-            console.log("you win");
-            return "You Win";
-        }
+
+        
     }
     
     checkColumn(board) {
@@ -198,26 +207,38 @@ class GameController {
         let playerCount = 0;
         let computerCount = 0;
 
-        for (let i = 0; i < 3; i++) {
-            columns[i].forEach((p) => {
-                if (p.root.innerHTML == this.player.playerChar) {
-                    playerCount++;
-                }
-                if (p.root.innerHTML == this.computer.playerChar) {
-                    computerCount++;
-                }
-            });
+        let p;
+        
+        for (let i = 0; i < columns.length; i++) {
             
-            playerCount = 0;
+            
+            for(let j = 0; j < columns[i].length; j++) {
+
+                if (playerCount != 3 && computerCount != 3) {
+                    p = columns[i][j]
+                    if (p.root.innerHTML == this.player.playerChar) {
+                        playerCount++;
+                    }
+                    if (p.root.innerHTML == this.computer.playerChar) {
+                        computerCount++;
+                    }
+                }
+            }
+            
+            if (computerCount == 3) {
+            return "You Lose";
+            }
+            else if (playerCount == 3) {
+                return "You Win";
+            }
+            
             computerCount = 0;
+            playerCount = 0;
+            
+            
         }
 
-        if (computerCount == 3) {
-            return "You Lose";
-        }
-        else if (playerCount == 3) {
-            return "You Win";
-        }
+        
 
         
     }
