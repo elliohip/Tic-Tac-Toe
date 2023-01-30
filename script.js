@@ -226,9 +226,12 @@ class GameController {
             }
             
             if (computerCount == 3) {
+
+                document.getElementById("game-score").innerHTML = "lose";
             return "You Lose";
             }
             else if (playerCount == 3) {
+                document.getElementById("game-score").innerHTML = "win"
                 return "You Win";
             }
             
@@ -335,6 +338,8 @@ class GameBoard {
     
     constructor(mainPlayer) {
 
+        // this.WIN_BOARD = document.getElementById("game-score");
+
         this.parent = document.getElementById("game");
 
         this.items = [];
@@ -415,3 +420,4 @@ class Runner {
 }
 
 let runner = new Runner();
+document.getElementById("restart-button");

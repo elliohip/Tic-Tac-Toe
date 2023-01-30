@@ -22,3 +22,11 @@ main {
     grid-template-columns: repeat(3, minmax(100px, 1fr));
     grid-template-rows: repeat(3, minmax(100px, 1fr));
 }
+
+.score-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 24pt;
+}
