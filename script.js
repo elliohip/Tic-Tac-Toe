@@ -401,6 +401,8 @@ class Runner {
 
     constructor() {
 
+        this.game;
+
         this.player = player(undefined);
         
         document.getElementById("x-character").addEventListener('click', (e) => {
@@ -412,12 +414,22 @@ class Runner {
         });
 
         document.getElementById("start-button").addEventListener('click', () => {this.run()});
+
+        document.getElementById("restart").addEventListener('click', () => {this.restart()});
     }
 
     run() {
-        let game = new GameBoard(this.player);
+        this.game = new GameBoard(this.player);
+    }
+
+    restart() {
+        document.getElementById("game").innerHTML = "";
+
+        this.run();
     }
 }
+
+
 
 let runner = new Runner();
 document.getElementById("restart-button");
