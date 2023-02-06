@@ -41,6 +41,12 @@ class BoardPiece {
 
 class GameController {
 
+
+    /**
+     * 
+     * @param {function} player player factory function
+     * @param {function} computer computer factory function
+     */
     constructor(player, computer) {
         this.player = player;
         this.computer = computer;
@@ -258,61 +264,44 @@ class GameController {
         let countLeftComputer = 0;
         let countRightComputer = 0;
 
-        for(let i = 0; i < board.length; i++) {
-            if (i == 0) {
-                if (board[i].root.innerHTML == this.player.playerChar) {
-                    countRightPlayer++;
-                }
-                else if (board[i].root.innerHTML == this.computer.playerChar) {
-                    countRightComputer++;
+        for (let i = 0; i < board.length; i++) {
+
+            if (countRightComputer != 3 && countRightPlayer != 3) {
+                if (i % 4 == 0) {
+
+                    if (board[i].root.innerHTML == this.player.playerChar) {
+                        countRightPlayer++;
+                    }
+                    else if (board[i].root.innerHTML == this.computer.playerChar) {
+                        countRightComputer++;
+                    }
+                    
                 }
                 
+            }
+            else {
+                break;
             }
             
-            else if (i == 2) {
-                if (board[i].root.innerHTML == this.player.playerChar) {
-                    countLeftPlayer++;
-                }
-                else if (board[i].root.innerHTML == this.computer.playerChar) {
-                    countLeftComputer++;
+            if (countLeftComputer != 3 && countLeftPlayer != 3) {
+
+                if (i % 2 == 0 && i != 0 && i != 8) {
+                    if (board[i].root.innerHTML == this.player.playerChar) {
+                        countLeftPlayer++;
+                    } else if (board[i].root.innerHTML == this.computer.playerChar) {
+                        countLeftComputer++;
+                    }
                 }
                 
+
+            }
+            else {
+                break;
             }
 
-            else if (i == 4) {
-
-                if (board[i].root.innerHTML == this.player.playerChar) {
-                    countLeftPlayer++;
-                }
-                else if (board[i].root.innerHTML == this.computer.playerChar) {
-                    countLeftComputer++;
-                }
-
-                if (board[i].root.innerHTML == this.player.playerChar) {
-                    countRightPlayer++;
-                }
-                else if (board[i].root.innerHTML == this.computer.playerChar) {
-                    countRightComputer++;
-                }
-                
-            }
-            else if (i == 6) {
-                if (board[i].root.innerHTML == this.player.playerChar) {
-                    countLeftPlayer++;
-                }
-                else if (board[i].root.innerHTML == this.computer.playerChar) {
-                    countLeftComputer++;
-                }
-            }
-            else if (i == 8) {
-                if (board[i].root.innerHTML == this.player.playerChar) {
-                    countRightPlayer++;
-                }
-                else if (board[i].root.innerHTML == this.computer.playerChar) {
-                    countRightComputer++;
-                }
-            }
         }
+
+        
 
         if (countLeftPlayer == 3) {
             console.log('you win');
