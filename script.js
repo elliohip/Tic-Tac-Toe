@@ -408,6 +408,8 @@ class Runner {
     }
 
     run() {
+
+        document.getElementById("game").style.backgroundColor = "tan";
         this.game = new GameBoard(this.player);
     }
 

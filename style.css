@@ -1,18 +1,37 @@
 header {
     display: grid;
     grid-template-columns: 1fr 1fr;
+
+    background-color: tan;
 }
 
 main {
     display: grid;
     grid-template-rows: 1fr 1fr 4fr 1fr;
+
+    background-color: rgb(30, 134, 172);
+
+}
+
+.choose-character {
+    background-color:tan;
 }
 
 #game {
     display: grid;
+    grid-column-start: 1;
+    grid-column-end: -1;
+
+    align-self: center;
+    justify-self: center;
+
+    
+    
 
     grid-template-columns: repeat(3, minmax(100px, 1fr));
     grid-template-rows: repeat(3, minmax(100px, 1fr));
+    
+    max-width: 750px;
 
 }
 
