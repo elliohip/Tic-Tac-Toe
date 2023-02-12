@@ -21,10 +21,24 @@ let player = (data) => {
     }
 }
 
+/**
+ * move that stores a number that will be evaluated modularly to find optimal 
+ * moves in minimax algorithm.  Will be stored as a tree and recursively traversed to find
+ * optimal move
+ */
+class Move {
+
+    constructor(idex) {
+        this.index = idex;
+    };
+}
+
 class BoardPiece {
 
     constructor(id) {
         this.root = document.createElement("div");
+
+        this.root.className = "piece";
 
         this.root.id = id;
 

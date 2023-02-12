@@ -35,11 +35,18 @@ main {
 
 }
 
+.piece {
+    border-radius: 10%;
+}
+
 .game-board #game{
     display: grid;
 
     grid-template-columns: repeat(3, minmax(100px, 1fr));
     grid-template-rows: repeat(3, minmax(100px, 1fr));
+
+    border-radius: 10%;
+    
 }
 
 .score-board {
