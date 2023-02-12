@@ -28,9 +28,19 @@ let player = (data) => {
  */
 class Move {
 
-    constructor(idex) {
-        this.index = idex;
+    constructor(idex ,e) {
+        this.move = idex;
+
+        this.element = e;
+
+        this.index;
+
+        this.score = undefined;
     };
+
+    setMove(m) {
+        this.move = m;
+    }
 }
 
 class BoardPiece {
@@ -70,6 +80,16 @@ class GameController {
         this.player = player;
         this.computer = computer;
         
+    }
+
+    /**
+     * 
+     * @param {GameBoard} board 
+     * @returns int for the best spot to move on the board for the computer
+     */
+    bestSpot(board) {
+
+        return minimax(board, this.computer);
     }
 
     /**
@@ -124,6 +144,18 @@ class GameController {
         this.checkColumn(board);
         this.checkRow(board);
         this.checkDiagonal(board);
+
+        if (this.checkColumn(board) != null) {
+            return true;
+        }
+        if (this.checkRow(board) != null) {
+            return true
+        }
+        if (this.checkDiagonal(board) != null) {
+            return true;
+        }
+
+        return false;
     }
 
     checkRow(board) {
@@ -279,6 +311,7 @@ class GameController {
             
         }
 
+
         
 
         
@@ -385,6 +418,19 @@ class GameBoard {
         
         this.moveFunction = (e) => {this.pieceListener(e, this.player, this.computer)}
 
+    }
+
+    getEmptySpaces(board) {
+
+        let empty = [];
+
+        for (let i = 0; i < board.length; i++) {
+            if (board[i].root.innerHTML == "") {
+                empty.push(i);
+            }
+        }
+
+        return empty;
     }
 
     createGrid() {
@@ -538,3 +584,73 @@ class Runner {
 
 let runner = new Runner();
 document.getElementById("restart-button");
+
+
+/*
+
+Minimax function
+
+*/
+
+
+/**
+ * 
+ * @param {GameBoard} board 
+ * @param {player} computerPlayer 
+ */
+function minimax(board, computerPlayer) {
+    let availableSpots = board.getEmptySpaces(board.items);
+
+    if (board.controller.checkWin(newBoard) == true) {
+        return {score:-10}
+    }
+    else if (board.controller.checkWin() == false) {
+        return {score: 20}
+    }
+    else if (availableSpots.length == 0) {
+        return {score:0}
+    }
+
+    let moves = [];
+
+    for (let i = 0; i < availableSpots.length; i++) {
+        let move = new Move(availableSpots[i]);
+
+        move.index = board.items[availableSpots[i]];
+        move.element.root.innerHTML = computerPlayer.playerChar;
+
+        if (computerPlayer == board.computer) {
+            var result = minimax(board, board.player)
+            move.score = result.score;
+        }
+        else if (computerPlayer == board.player) {
+            var result = minimax(board, board.computer)
+            move.score = result.score;
+        }
+
+        board[availableSpots[i]] = move.index;
+        moves.push(move);
+    }
+    let bestMove;
+
+    if (computerPlayer === board.computer) {
+        let bestScore = -10000;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score > bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+    }
+    else {
+        let bestScore = 10000;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score < bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+    }
+
+    return moves[bestMove];
+}
