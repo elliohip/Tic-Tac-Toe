@@ -35,9 +35,7 @@ main {
 
 }
 
-.piece {
-    border-radius: 10%;
-}
+
 
 .game-board #game{
     display: grid;
@@ -55,4 +53,10 @@ main {
     align-items: center;
 
     font-size: 24pt;
+}
+
+.piece {
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }

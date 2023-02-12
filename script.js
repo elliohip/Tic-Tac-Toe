@@ -42,7 +42,8 @@ class BoardPiece {
 
         this.root.id = id;
 
-        this.root.style.border = "1px solid black";
+        
+        
 
         
 
@@ -79,15 +80,26 @@ class GameController {
         let random = Math.floor(Math.random() * 8);
         let randPiece = board[random];
 
+        let availSpace = 0;
+
+        for (let i = 0; i < board.length; i++) {
+            if (board[i].root.innerHTML == "") {
+                availSpace++;
+            }
+        }
         
 
-        while (randPiece.root.innerHTML != 0) {
-            random = Math.floor(Math.random() * 8);
-            randPiece = board[random];
+        if (availSpace > 1) {
+            while (randPiece.root.innerHTML != "") {
 
-            if (randPiece.root.innerHTML == "") {
-                randPiece.root.innerHTML = computer;
-                break;
+                random = Math.floor(Math.random() * 8);
+                randPiece = board[random];
+
+                if (randPiece.root.innerHTML == "") {
+                    randPiece.root.innerHTML = computer;
+                    break;
+                }
+
             }
         }
 
@@ -375,6 +387,53 @@ class GameBoard {
 
             piece = new BoardPiece("piece-" + i);
             this.items[this.items.length] = piece;
+             
+            if (i == 4) {
+                piece.root.style.border = "1px solid black";
+            }
+            else if (i == 0) {
+                piece.root.style.borderBottom = "1px solid black";
+                
+                piece.root.style.borderRight = "1px solid black";
+            }
+            else if (i == 2) {
+                piece.root.style.borderBottom = "1px solid black";
+                piece.root.style.borderLeft = "1px solid black";
+                
+            }
+            else if (i == 1) {
+                piece.root.style.borderBottom = "1px solid black";
+                piece.root.style.borderLeft = "1px solid black";
+                piece.root.style.borderRight = "1px solid black";
+            }
+            else if (i == 3) {
+                piece.root.style.borderBottom = "1px solid black";
+                
+                piece.root.style.borderRight = "1px solid black";
+            }
+            else if (i == 5) {
+                piece.root.style.borderBottom = "1px solid black";
+                piece.root.style.borderLeft = "1px solid black";
+                
+            }
+            else if (i == 6) {
+                piece.root.style.borderTop = "1px solid black";
+                
+                piece.root.style.borderRight = "1px solid black";
+            }
+            else if (i == 8) {
+                piece.root.style.borderTop = "1px solid black";
+                piece.root.style.borderLeft = "1px solid black";
+                
+            }
+            else if (i == 7) {
+                piece.root.style.borderTop = "1px solid black";
+                piece.root.style.borderLeft = "1px solid black";
+                piece.root.style.borderRight = "1px solid black";
+            }
+            
+            
+
             this.parent.appendChild(piece.root);
         }
 
