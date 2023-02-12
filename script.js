@@ -42,7 +42,7 @@ class BoardPiece {
 
         this.root.id = id;
 
-        
+        this.changed = false;
         
 
         
@@ -453,12 +453,11 @@ class GameBoard {
             p = this.items[i];
 
             let moveFunction = (e) => {this.pieceListener(e, this.player, this.computer, moveFunction)
-                //e.target.removeEventListener('click', moveFunction)
+                
                 for (let i = 0; i < this.items.length; i++) {
-                    if (this.items[i].root.innerHTML != "") {
-                        let old = this.items[i].root;
-                        let newNode = old.cloneNode(true);
-                        old.parentNode.replaceChild(newNode, old);
+
+                    if (this.items[i].changed == false && this.items[i].root.innerHTML != "") {
+                        this.items[i].changed = true;
                     }
                 }};
 
@@ -469,6 +468,12 @@ class GameBoard {
 
             
         }
+    }
+
+    disableNode(oldNode, newNode) {
+
+        oldNode.parentNode.replaceChild(newNode);
+
     }
 
     
@@ -482,8 +487,12 @@ class GameBoard {
         this.controller.move(this.items, computer.playerChar);
 
         for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].root.innerHTML != "") {
-                this.items[i].root.removeEventListener('click', moveFunction);
+            if (this.items[i].root.innerHTML != "" && this.items[i].changed == false) {
+
+                let old = this.items[i].root;
+                let newNode = old.cloneNode(true)
+                old.parentNode.replaceChild(newNode, old);
+
             }
         }
         
