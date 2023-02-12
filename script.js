@@ -51,7 +51,11 @@ class BoardPiece {
 
     setData(d) {
         this.root.innerHTML = d;
+
+        
     }
+
+    
 }
 
 class GameController {
@@ -131,6 +135,8 @@ class GameController {
 
         let r = 0;
         for(let i = 0; i < board.length; i++) {
+
+            
             
             if (i < 3) {
                 rows[0][r] = board[i];
@@ -377,6 +383,7 @@ class GameBoard {
         this.createGrid();
         this.addListeners();
         
+        this.moveFunction = (e) => {this.pieceListener(e, this.player, this.computer)}
 
     }
 
@@ -445,16 +452,41 @@ class GameBoard {
         for (let i = 0; i < this.items.length; i++) {
             p = this.items[i];
 
+            let moveFunction = (e) => {this.pieceListener(e, this.player, this.computer, moveFunction)
+                //e.target.removeEventListener('click', moveFunction)
+                for (let i = 0; i < this.items.length; i++) {
+                    if (this.items[i].root.innerHTML != "") {
+                        let old = this.items[i].root;
+                        let newNode = old.cloneNode(true);
+                        old.parentNode.replaceChild(newNode, old);
+                    }
+                }};
+
             console.log("item added");
-            p.root.addEventListener('click', (e) => {this.pieceListener(e, this.player, this.computer)});
+            if (p.root.innerHTML == "") {
+                p.root.addEventListener('click', moveFunction)
+            }
+
+            
         }
     }
 
-    pieceListener(e, player, computer) {
+    
+
+    
+
+    pieceListener(e, player, computer, moveFunction) {
 
         e.target.innerHTML = player.playerChar;
 
         this.controller.move(this.items, computer.playerChar);
+
+        for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i].root.innerHTML != "") {
+                this.items[i].root.removeEventListener('click', moveFunction);
+            }
+        }
+        
     }
 
 }
