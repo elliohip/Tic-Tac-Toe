@@ -138,7 +138,6 @@ class GameController {
 
         if (randPiece.root.innerHTML == "") {
             randPiece.root.innerHTML = computer;
-            
         }
 
         this.checkWin(board);
@@ -656,13 +655,13 @@ function minimax(board, computerPlayer, controller) {
         let move = new Move(availableSpots[i]);
 
         move.index = board[availableSpots[i]];
-        move.element.root.innerHTML = computerPlayer.playerChar;
+        board[availableSpots[i]].innerHTML = computerPlayer;
 
-        if (computerPlayer == controller.computer) {
+        if (computerPlayer == controller.computer.playerChar) {
             var result = minimax(board, board.player, controller)
             move.score = result.score;
         }
-        else if (computerPlayer == controller.player) {
+        else if (computerPlayer == controller.player.playerChar) {
             var result = minimax(board, board.computer, controller)
             move.score = result.score;
         }
