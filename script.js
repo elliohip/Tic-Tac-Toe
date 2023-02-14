@@ -106,9 +106,14 @@ class GameController {
 
         let availSpace = 0;
 
+        let empty = [];
+
         for (let i = 0; i < board.length; i++) {
             if (board[i].root.innerHTML == "") {
                 availSpace++;
+
+                empty.push(i);
+
             }
         }
         
@@ -127,12 +132,30 @@ class GameController {
             }
         }
 
+
+
+        minimax(board,computer, this);
+
         if (randPiece.root.innerHTML == "") {
             randPiece.root.innerHTML = computer;
             
         }
 
         this.checkWin(board);
+
+        if (this.checkWin(board) == 1) {
+            
+
+            let box = new TextBox("You Win");
+            document.getElementById("game").innerHTML = "";
+            box.appendRoot("game");
+        }
+        else if (this.checkWin(board) == -1) {
+            let box = new TextBox("You Lose");
+            document.getElementById("game").innerHTML = "";
+            box.appendRoot("game");
+        }
+        
         
 
         //randPiece.innerHTML = computer;
@@ -145,17 +168,26 @@ class GameController {
         this.checkRow(board);
         this.checkDiagonal(board);
 
-        if (this.checkColumn(board) != null) {
-            return true;
+        if (this.checkColumn(board) == "You Win") {
+            return 1;
         }
-        if (this.checkRow(board) != null) {
-            return true
+        if (this.checkRow(board) == "You Win") {
+            return 1;
         }
-        if (this.checkDiagonal(board) != null) {
-            return true;
+        if (this.checkDiagonal(board) == "You Win") {
+            return 1;
+        }
+        if (this.checkColumn(board) == "You Lose") {
+            return -1;
+        }
+        if (this.checkRow(board) == "You Lose") {
+            return -1;
+        }
+        if (this.checkDiagonal(board) == "You Lose") {
+            return -1;
         }
 
-        return false;
+        return 0;
     }
 
     checkRow(board) {
@@ -370,16 +402,16 @@ class GameController {
 
         if (countLeftPlayer == 3) {
             console.log('you win');
-            return "you win";
+            return "You Win";
         } else if (countRightPlayer == 3) {
             console.log('you win');
-            return "you win";
+            return "You Win";
         } else if (countLeftComputer == 3) {
             console.log('you lose');
-            return "you lose";
+            return "You Lose";
         } else if (countLeftComputer == 3) {
             console.log('you lose');
-            return "you lose";
+            return "You Lose";
         }
     }
 
@@ -420,12 +452,12 @@ class GameBoard {
 
     }
 
-    getEmptySpaces(board) {
+    getEmptySquares() {
 
         let empty = [];
 
-        for (let i = 0; i < board.length; i++) {
-            if (board[i].root.innerHTML == "") {
+        for (let i = 0; i < this.items; i++) {
+            if (this.items[i].root.innerHTML == "") {
                 empty.push(i);
             }
         }
@@ -498,14 +530,9 @@ class GameBoard {
         for (let i = 0; i < this.items.length; i++) {
             p = this.items[i];
 
-            let moveFunction = (e) => {this.pieceListener(e, this.player, this.computer, moveFunction)
+            let moveFunction = (e) => {this.pieceListener(e, this.player, this.computer)
                 
-                for (let i = 0; i < this.items.length; i++) {
-
-                    if (this.items[i].changed == false && this.items[i].root.innerHTML != "") {
-                        this.items[i].changed = true;
-                    }
-                }};
+                };
 
             console.log("item added");
             if (p.root.innerHTML == "") {
@@ -516,33 +543,44 @@ class GameBoard {
         }
     }
 
-    disableNode(oldNode, newNode) {
-
-        oldNode.parentNode.replaceChild(newNode);
-
-    }
+    
 
     
 
     
 
-    pieceListener(e, player, computer, moveFunction) {
+    pieceListener(e, player, computer) {
 
         e.target.innerHTML = player.playerChar;
 
         this.controller.move(this.items, computer.playerChar);
 
         for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].root.innerHTML != "" && this.items[i].changed == false) {
+            if (this.items[i].root.innerHTML != "") {
 
                 let old = this.items[i].root;
                 let newNode = old.cloneNode(true)
-                old.parentNode.replaceChild(newNode, old);
+                old.parentNode.replaceChild(newNode, old)
 
             }
         }
         
     }
+
+}
+
+class TextBox {
+    constructor(text) {
+        this.root = document.createElement("h1");
+        this.root.innerHTML = text;
+    }
+
+    appendRoot(id) {
+        let doc = document.getElementById(id);
+
+        doc.appendChild(this.root)
+    }
+
 
 }
 
@@ -598,14 +636,15 @@ Minimax function
  * @param {GameBoard} board 
  * @param {player} computerPlayer 
  */
-function minimax(board, computerPlayer) {
-    let availableSpots = board.getEmptySpaces(board.items);
+function minimax(board, computerPlayer, controller) {
 
-    if (board.controller.checkWin(newBoard) == true) {
+    let availableSpots = emptySpots(board);
+
+    if (controller.checkWin(board) == 1) {
         return {score:-10}
     }
-    else if (board.controller.checkWin() == false) {
-        return {score: 20}
+    else if (controller.checkWin(board) == -1) {
+        return {score: 10}
     }
     else if (availableSpots.length == 0) {
         return {score:0}
@@ -616,15 +655,15 @@ function minimax(board, computerPlayer) {
     for (let i = 0; i < availableSpots.length; i++) {
         let move = new Move(availableSpots[i]);
 
-        move.index = board.items[availableSpots[i]];
+        move.index = board[availableSpots[i]];
         move.element.root.innerHTML = computerPlayer.playerChar;
 
-        if (computerPlayer == board.computer) {
-            var result = minimax(board, board.player)
+        if (computerPlayer == controller.computer) {
+            var result = minimax(board, board.player, controller)
             move.score = result.score;
         }
-        else if (computerPlayer == board.player) {
-            var result = minimax(board, board.computer)
+        else if (computerPlayer == controller.player) {
+            var result = minimax(board, board.computer, controller)
             move.score = result.score;
         }
 
@@ -652,5 +691,22 @@ function minimax(board, computerPlayer) {
         }
     }
 
+    console.log(moves[bestMove]);
     return moves[bestMove];
+}
+
+
+
+function emptySpots(items) {
+
+
+    let empty = [];
+
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].root.innerHTML == "") {
+            empty.push(i)
+        }
+    }
+
+    return empty;
 }
