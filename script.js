@@ -162,7 +162,143 @@ class GameController {
         
     }
 
+    winCheck(board, player, computer) {
+        let rowWinCount = 0;
+        let rowLoseCount = 0;
+        let colWinCount = 0;
+        let colLoseCount = 0;
+        let diagonalDownCountWin = 0;
+        let diagonalDownCountLose = 0;
+        let diagonalUpCountWin = 0;
+        let diagonalUpCountLose = 0;
+    
+        for (let i = 0; i < board.length; i++) {
+            let adjustedI = i + 1;
+            
+            if (board[i] == player) {
+                rowWinCount++;
+            }
+            else if (board[i] == computer) {
+                rowLoseCount++;
+            }
+    
+            if (adjustedI == 3 || adjustedI == 6 || adjustedI == 9) {
+                rowWinCount == 0;
+                rowLoseCount == 0;
+            }
+
+            if (rowWinCount == 3) {
+                return 1;
+            }
+            else if (rowLoseCount == 3) {
+                return -1;
+            }
+            
+    
+        }
+
+        for (let j = 0, i = 0; i < board.length; i + 3) {
+
+            let adjustedI = i + 1;
+
+            if (board[i] == player) {
+                colWinCount++;
+            }
+            else if (board[i] == computer) {
+                colLoseCount++;
+            }
+
+            if (adjustedI == 7 || adjustedI == 8) {
+                j++;
+                i = j;
+            }
+
+            if (colWinCount == 3) {
+                return 1;
+            }
+            else if (colLoseCount == 3) {
+                return -1;
+            }
+
+
+        }
+
+        for (let i = 0; i < board.length; i++) {
+
+            if (i == 0) {
+                
+
+                if (board[i] == player) {
+                    diagonalDownCountWin++;
+                }
+            }
+            
+            if (i == 4) {
+                
+                if (board[i] == player) {
+                    diagonalUpCountWin++;
+                }
+            }
+
+            if (i == 4) {
+                
+
+                if (board[i].root.innerHTML == player) {
+                    diagonalDownCountWin++;
+                }
+                else if (board[i].root.innerHTML == player) {
+                    diagonalUpCountWin++;
+                }
+
+                if (board[i].root.innerHTML == computer) {
+                    diagonalDownCountLose++;
+                }
+                else if (board[i].root.innerHTML == computer) {
+                    diagonalUpCountLose++;
+                }
+
+
+            }
+            
+            if (i == 2) {
+                
+
+                if (board[i].root.innerHTML == player) {
+                    diagonalUpCountWin++;
+                } else if (board[i].root.innerHTML == computer) {
+                    diagonalUpCountLose++;
+                }
+            }
+
+            if (i == 9) {
+                
+
+                if (board[i].root.innerHTML == player) {
+                    diagonalDownCountWin++;
+                }
+
+                if (board[i].root.innerHTML == computer) {
+                    diagonalDownCountLose++;
+                }
+            }
+
+            if (diagonalUpCountWin == 3 || diagonalDownCountWin == 3) {
+                return 1;
+            }
+            else if (diagonalUpCountLose == 3 || diagonalDownCountLose == 3) {
+                return -1;
+            }
+        }
+
+        
+        
+    }
+
     checkWin(board) {
+
+        this.winCheck(board, this.player.playerChar, this.computer.playerChar);
+
+        /*
         this.checkColumn(board);
         this.checkRow(board);
         this.checkDiagonal(board);
@@ -185,234 +321,13 @@ class GameController {
         if (this.checkDiagonal(board) == "You Lose") {
             return -1;
         }
+        */
 
         return 0;
+
     }
 
-    checkRow(board) {
-
-        let count = 0;
-        let piece = board[0];
-
-        let rows = [[],[],[]];
-
-        let r = 0;
-        for(let i = 0; i < board.length; i++) {
-
-            
-            
-            if (i < 3) {
-                rows[0][r] = board[i];
-
-                r++;
-                
-            }
-            else if (i < 6) {
-                rows[1][r] = board[i];
-
-                r++;
-
-                
-            }
-            else if (i < 9) {
-                rows[2][r] = board[i];
-
-                r++;
-
-                
-            }
-            if (r == 3) {
-                r = 0;
-            }
-
-
-        }
-
-        let playerCount = 0;
-        let computerCount = 0;
-
-        let p;
-        for (let i = 0; i < rows.length; i++) {
-            for(let j = 0; j < rows[i].length; j++) {
-
-                if (playerCount != 3 && computerCount != 3) {
-                    p = rows[i][j]
-                    if (p.root.innerHTML == this.player.playerChar) {
-                        playerCount++;
-                    }
-                    if (p.root.innerHTML == this.computer.playerChar) {
-                        computerCount++;
-                    }
-                }
-            }
-            if (computerCount == 3) {
-            console.log("you lose");
-            return "You Lose";
-            }
-            else if (playerCount == 3) {
-                console.log("you win");
-                return "You Win";
-            }
-
-            playerCount = 0;
-            computerCount = 0;
-        }
-
-        
-    }
     
-    checkColumn(board) {
-
-        let count = 0;
-        
-
-        let columns = [[],[],[]];
-
-        let c1 = 0;
-        let c2 = 0;
-        let c3 = 0;
-        for(let i = 0; i < board.length; i++) {
-            
-            if ((i % 3) == 0) {
-                columns[0][c1] = board[i];
-
-                c1++;
-                if (c1 == 3) {
-                    c1 = 0;
-                }
-            }
-            else if ((i % 3) == 1) {
-                columns[1][c2] = board[i];
-
-                c2++;
-
-                if (c2 == 3) {
-                    c2 = 0;
-                }
-            }
-            else if ((i % 3) == 2) {
-                columns[2][c3] = board[i];
-
-                c3++;
-
-                if (c3 == 3) {
-                    c3 = 0;
-                    break;
-                }
-            }
-
-
-        }
-
-
-        let playerCount = 0;
-        let computerCount = 0;
-
-        let p;
-        
-        for (let i = 0; i < columns.length; i++) {
-            
-            
-            for(let j = 0; j < columns[i].length; j++) {
-
-                if (playerCount != 3 && computerCount != 3) {
-                    p = columns[i][j]
-                    if (p.root.innerHTML == this.player.playerChar) {
-                        playerCount++;
-                    }
-                    if (p.root.innerHTML == this.computer.playerChar) {
-                        computerCount++;
-                    }
-                }
-            }
-            
-            if (computerCount == 3) {
-
-                document.getElementById("game-score").innerHTML = "lose";
-            return "You Lose";
-            }
-            else if (playerCount == 3) {
-                document.getElementById("game-score").innerHTML = "win"
-                return "You Win";
-            }
-            
-            computerCount = 0;
-            playerCount = 0;
-            
-            
-        }
-
-
-        
-
-        
-    }
-
-    /**
-     * 
-     * 
-     * @param {Array} board array of board objects
-     */
-    checkDiagonal(board) {
-        let countLeftPlayer = 0;
-        let countRightPlayer = 0;
-
-        let countLeftComputer = 0;
-        let countRightComputer = 0;
-
-        for (let i = 0; i < board.length; i++) {
-
-            if (countRightComputer != 3 && countRightPlayer != 3) {
-                if (i % 4 == 0) {
-
-                    if (board[i].root.innerHTML == this.player.playerChar) {
-                        countRightPlayer++;
-                    }
-                    else if (board[i].root.innerHTML == this.computer.playerChar) {
-                        countRightComputer++;
-                    }
-                    
-                }
-                
-            }
-            else {
-                break;
-            }
-            
-            if (countLeftComputer != 3 && countLeftPlayer != 3) {
-
-                if (i % 2 == 0 && i != 0 && i != 8) {
-                    if (board[i].root.innerHTML == this.player.playerChar) {
-                        countLeftPlayer++;
-                    } else if (board[i].root.innerHTML == this.computer.playerChar) {
-                        countLeftComputer++;
-                    }
-                }
-                
-
-            }
-            else {
-                break;
-            }
-
-        }
-
-        
-
-        if (countLeftPlayer == 3) {
-            console.log('you win');
-            return "You Win";
-        } else if (countRightPlayer == 3) {
-            console.log('you win');
-            return "You Win";
-        } else if (countLeftComputer == 3) {
-            console.log('you lose');
-            return "You Lose";
-        } else if (countLeftComputer == 3) {
-            console.log('you lose');
-            return "You Lose";
-        }
-    }
 
     
 
@@ -632,8 +547,8 @@ Minimax function
 
 /**
  * 
- * @param {GameBoard} board 
- * @param {player} computerPlayer 
+ * @param {Array} board 
+ * @param {String} computerPlayer 
  */
 function minimax(board, computerPlayer, controller) {
 
@@ -655,14 +570,17 @@ function minimax(board, computerPlayer, controller) {
         let move = new Move(availableSpots[i]);
 
         move.index = board[availableSpots[i]];
-        board[availableSpots[i]].innerHTML = computerPlayer;
+        board[availableSpots[i]].root.innerHTML = computerPlayer;
 
         if (computerPlayer == controller.computer.playerChar) {
-            var result = minimax(board, board.player, controller)
+            var result = minimax(board, controller.player.playerChar, controller)
+
+            console.log("available spots: " + availableSpots);
+
             move.score = result.score;
         }
-        else if (computerPlayer == controller.player.playerChar) {
-            var result = minimax(board, board.computer, controller)
+        else {
+            var result = minimax(board, controller.computer.playerChar, controller)
             move.score = result.score;
         }
 
@@ -708,4 +626,32 @@ function emptySpots(items) {
     }
 
     return empty;
+}
+
+function checkWin(board, player, computer) {
+    let rowWinCount = 0;
+    let rowLoseCount = 0;
+    let colWinCount = 0;
+    let colLoseCount = 0;
+    let diagonalDownCount = 0;
+    let diagonalUpCount = 0;
+
+    for (let i = 0; i < board.length; i++) {
+        let adjustedI = i + 1;
+        
+        if (board[i] == player) {
+            rowWinCount++;
+        }
+        else if (board[i] == computer) {
+            rowLoseCount++;
+        }
+
+        if (adjustedI == 3 || adjustedI == 6 || adjustedI == 9) {
+            rowWinCount == 0;
+            rowLoseCount == 0;
+        }
+        
+
+    }
+    
 }
