@@ -171,21 +171,20 @@ class GameController {
         let diagonalDownCountLose = 0;
         let diagonalUpCountWin = 0;
         let diagonalUpCountLose = 0;
+
+        player = player.playerChar;
     
         for (let i = 0; i < board.length; i++) {
             let adjustedI = i + 1;
             
-            if (board[i] == player) {
+            if (board[i].root.innerHTML == player) {
                 rowWinCount++;
             }
-            else if (board[i] == computer) {
+            else if (board[i].root.innerHTML == computer) {
                 rowLoseCount++;
             }
     
-            if (adjustedI == 3 || adjustedI == 6 || adjustedI == 9) {
-                rowWinCount == 0;
-                rowLoseCount == 0;
-            }
+            
 
             if (rowWinCount == 3) {
                 return 1;
@@ -193,18 +192,23 @@ class GameController {
             else if (rowLoseCount == 3) {
                 return -1;
             }
+
+            if (adjustedI == 3 || adjustedI == 6 || adjustedI == 9) {
+                rowWinCount = 0;
+                rowLoseCount = 0;
+            }
             
     
         }
 
-        for (let j = 0, i = 0; i < board.length; i + 3) {
+        for (let j = 0, i = 0; i < board.length; i = i + 3) {
 
             let adjustedI = i + 1;
 
-            if (board[i] == player) {
+            if (board[i].root.innerHTML == player) {
                 colWinCount++;
             }
-            else if (board[i] == computer) {
+            else if (board[i].root.innerHTML == computer) {
                 colLoseCount++;
             }
 
@@ -223,71 +227,19 @@ class GameController {
 
         }
 
-        for (let i = 0; i < board.length; i++) {
+        if (board[0].root.innerHTML == player && board[4].root.innerHTML == player && board[8].root.innerHTML == player)  {
 
-            if (i == 0) {
-                
+            return 1;
 
-                if (board[i] == player) {
-                    diagonalDownCountWin++;
-                }
-            }
-            
-            if (i == 4) {
-                
-                if (board[i] == player) {
-                    diagonalUpCountWin++;
-                }
-            }
+        } else if (board[2].root.innerHTML == player && board[4].root.innerHTML == player && board[6].root.innerHTML == player) {
 
-            if (i == 4) {
-                
-
-                if (board[i].root.innerHTML == player) {
-                    diagonalDownCountWin++;
-                }
-                else if (board[i].root.innerHTML == player) {
-                    diagonalUpCountWin++;
-                }
-
-                if (board[i].root.innerHTML == computer) {
-                    diagonalDownCountLose++;
-                }
-                else if (board[i].root.innerHTML == computer) {
-                    diagonalUpCountLose++;
-                }
-
-
-            }
-            
-            if (i == 2) {
-                
-
-                if (board[i].root.innerHTML == player) {
-                    diagonalUpCountWin++;
-                } else if (board[i].root.innerHTML == computer) {
-                    diagonalUpCountLose++;
-                }
-            }
-
-            if (i == 9) {
-                
-
-                if (board[i].root.innerHTML == player) {
-                    diagonalDownCountWin++;
-                }
-
-                if (board[i].root.innerHTML == computer) {
-                    diagonalDownCountLose++;
-                }
-            }
-
-            if (diagonalUpCountWin == 3 || diagonalDownCountWin == 3) {
-                return 1;
-            }
-            else if (diagonalUpCountLose == 3 || diagonalDownCountLose == 3) {
-                return -1;
-            }
+            return 1;
+        }
+        else if (board[0].root.innerHTML == computer && board[4].root.innerHTML == computer && board[8].root.innerHTML == computer) {
+            return -1;
+        }
+        else if (board[2].root.innerHTML == computer && board[4].root.innerHTML == computer && board[6].root.innerHTML == computer) {
+            return -1;
         }
 
         
@@ -296,7 +248,15 @@ class GameController {
 
     checkWin(board) {
 
-        this.winCheck(board, this.player.playerChar, this.computer.playerChar);
+
+
+        if (this.winCheck(board, this.player, this.computer) == 1) {
+            document.getElementById("game").innerHTML = "you win!"
+        }
+        else if (this.winCheck(board, this.player, this.computer) == -1) {
+            document.getElementById("game").innerHTML = "you lose!"
+        }
+
 
         /*
         this.checkColumn(board);
@@ -549,19 +509,26 @@ Minimax function
  * 
  * @param {Array} board 
  * @param {String} computerPlayer 
+ * @param {GameController} controller
  */
 function minimax(board, computerPlayer, controller) {
 
     let availableSpots = emptySpots(board);
 
-    if (controller.checkWin(board) == 1) {
-        return {score:-10}
+    if (controller.winCheck(board, controller.player.playerChar, controller.computer.playerChar) == 1) {
+        let m = new Move(availableSpots[0]);
+        m.score = -10;
+        return m;
     }
-    else if (controller.checkWin(board) == -1) {
-        return {score: 10}
+    else if (controller.winCheck(board, controller.player.playerChar, controller.computer.playerChar) == -1) {
+        let m = new Move(availableSpots[0]);
+        m.score = 10;
+        return m;
     }
     else if (availableSpots.length == 0) {
-        return {score:0}
+        
+        return {score: 0}
+
     }
 
     let moves = [];
@@ -581,6 +548,7 @@ function minimax(board, computerPlayer, controller) {
         }
         else {
             var result = minimax(board, controller.computer.playerChar, controller)
+            console.log("available spots: " + availableSpots);
             move.score = result.score;
         }
 
@@ -589,7 +557,7 @@ function minimax(board, computerPlayer, controller) {
     }
     let bestMove;
 
-    if (computerPlayer === board.computer) {
+    if (computerPlayer === board.computer.playerChar) {
         let bestScore = -10000;
         for (let i = 0; i < moves.length; i++) {
             if (moves[i].score > bestScore) {
@@ -628,30 +596,5 @@ function emptySpots(items) {
     return empty;
 }
 
-function checkWin(board, player, computer) {
-    let rowWinCount = 0;
-    let rowLoseCount = 0;
-    let colWinCount = 0;
-    let colLoseCount = 0;
-    let diagonalDownCount = 0;
-    let diagonalUpCount = 0;
 
-    for (let i = 0; i < board.length; i++) {
-        let adjustedI = i + 1;
-        
-        if (board[i] == player) {
-            rowWinCount++;
-        }
-        else if (board[i] == computer) {
-            rowLoseCount++;
-        }
 
-        if (adjustedI == 3 || adjustedI == 6 || adjustedI == 9) {
-            rowWinCount == 0;
-            rowLoseCount == 0;
-        }
-        
-
-    }
-    
-}
