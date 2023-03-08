@@ -7,10 +7,10 @@ class AI {
 
 class Move {
 
-    constructor() {
-        this.index;
-        this.piece;
-        this.score;
+    constructor(i, p, s) {
+        this.index = i;
+        this.piece = p;
+        this.score = s;
     }
 
 }
@@ -120,6 +120,8 @@ class Board {
 
     move(e) {
 
+        let mooo;
+
         
         e.target.innerHTML = this.player;
         this.spots = this.availableSpots();
@@ -135,6 +137,9 @@ class Board {
         }
         else if (this.DIFFICULTY == "hard") {
             // unbeatable move
+            let AI_move = this.bestMove();
+            mooo = AI_move;
+            this.items[mooo.index].innerHTML = this.computer;
         }
 
         let w = this.checkWin(this.items);
@@ -147,9 +152,184 @@ class Board {
         }
     }
 
-    minimax() {
+    bestMove() {
+
+        let index;
+
+        let bestIndex;
+
+        let available = this.availableSpots();
+
+        let bestScore = -Infinity;
+
+        let moves = [];
+
+        let move = new Move();
+
+        
+
+        
+        for (let i = 0; i < available.length; i++) {
+            index = available[i];
+            this.items[index].innerHTML = this.computer;
+
+            let score = this.minimax(this.items, 0, false);
+            score.index = index;
+            moves.push(score);
+            this.items[index].innerHTML = "";
+
+            if (bestScore < score.score) {
+                bestScore = score.score;
+                move = score;
+                bestIndex = index;
+            }
+            
+        }
+
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score > bestScore) {
+                move = moves[i];
+            }
+        }
+
+
+
+        return move;
 
     }
+
+    minimax(board, depth, isMaximizing) {
+
+        let av = this.availableSpots();
+
+        let move;
+
+        /**
+         * checks terminal states
+         */
+        if (this.checkWin(board) == 1) {
+
+            move = new Move();
+            move.score = -10;
+            return move;
+        }
+        else if (this.checkWin(board) == -1) {
+            move = new Move();
+            move.score = 10;
+            return move;
+
+        }
+        else if (av.length == 0) {
+            move = new Move();
+            move.score = 0;
+            return move;
+        }
+
+        if (isMaximizing) {
+            let bestScore = -Infinity;
+
+            let choices = [];
+            
+            for (let i = 0; i < board.length; i++) {
+
+                move = new Move();
+
+                if (board[i].innerHTML == "") {
+
+                    
+                    board[i].innerHTML = this.computer;
+                    
+
+                    let refMove = this.minimax(board, depth+1, false);
+
+                    if (Math.max(bestScore, refMove.score) === refMove.score) {
+                        move = refMove;
+                        bestScore = refMove.score;
+                        move.score = bestScore;
+                    };
+
+                    choices.push(move);
+                    
+                    
+                    
+
+                    
+
+                    //refMove.score = move.score;
+                    // move.index = i;
+                    board[i].innerHTML = "";
+                }
+            }
+
+            move = choices[0];
+            for (let i = 0; i < choices.length; i++) {
+                if (choices[i].score > move.score) {
+                    move = choices[i];
+                }
+            }
+
+            if (move.score == undefined) {
+                console.log("undefined score")
+            }
+
+            return move;
+        }
+        else {
+            let bestScore = Infinity;
+
+            let choices = [];
+            
+
+            for (let i = 0; i < board.length; i++) {
+
+                if (board[i].innerHTML == "") {
+
+                    
+
+                    
+
+                    board[i].innerHTML = this.player;
+                    
+
+                    let refMove = this.minimax(board, depth+1, true);
+                    if (Math.min(bestScore, refMove.score) === refMove.score) {
+                        move = refMove;
+                        move.index = i;
+                        bestScore = refMove.score;
+                        move.score = bestScore;
+                    };
+
+                    choices.push(move);
+
+                    
+
+                    //move.index = i;
+                    board[i].innerHTML = "";
+
+                    
+                    
+                }
+            }
+
+            move = choices[0];
+            for (let i = 0; i < choices.length; i++) {
+                if (choices[i].score < move.score) {
+                    move = choices[i];
+                }
+            }
+            if (move.score == undefined) {
+                console.log("undefined score")
+            }
+            return move;
+        }
+
+
+
+
+    }
+
+
+    
 
 
     checkWin(items) {
@@ -225,7 +405,7 @@ class Board {
 
         // check columns
 
-        for (let i = 0; i < items.length; i++) {
+        for (let i = 0; i < 3; i++) {
         
             if (items[0 + i].innerHTML == this.player && 
                 items[3 + i].innerHTML == this.player &&
