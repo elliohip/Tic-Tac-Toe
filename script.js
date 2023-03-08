@@ -30,7 +30,7 @@ class Board {
 
         this.computer;
 
-        let choices = Array.from(document.getElementById("difficulty"));
+        let choices = Array.from(document.getElementById("difficulty").children);
 
         let difficulty;
 
@@ -39,9 +39,9 @@ class Board {
         choices.forEach((curr) => {
             curr.addEventListener("click", (e) => {
                 
-                this.DIFFICULTY = e.target.innerHTML;
+                this.DIFFICULTY = e.target.innerHTML.toLowerCase();
                 console.log("difficulty: " + this.DIFFICULTY);
-                
+
             });
         })
         
@@ -74,7 +74,7 @@ class Board {
 
         this.items = [];
         
-        
+        this.spots;
 
 
         
@@ -119,10 +119,13 @@ class Board {
     }
 
     move(e) {
+
+        
         e.target.innerHTML = this.player;
+        this.spots = this.availableSpots();
         if (this.DIFFICULTY == "easy") {
             // next move
-            this.items[this.availableSpots[0]].innerHTML = this.computer;
+            this.items[this.spots[0]].innerHTML = this.computer;
         }
         else if (this.DIFFICULTY == "medium") {
             let random = Math.floor(Math.random() * this.availableSpots().length);
