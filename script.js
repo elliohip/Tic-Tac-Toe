@@ -24,11 +24,17 @@ class Piece {
 }
 
 class Board {
-    constructor() {
+    constructor(p, c) {
 
-        this.player;
+        if (p == null || c == null || p == undefined || c == undefined) {
+            console.log("no player chosen");
+        }
 
-        this.computer;
+
+
+        this.player = p;
+
+        this.computer = c;
 
         let choices = Array.from(document.getElementById("difficulty").children);
 
@@ -46,28 +52,9 @@ class Board {
         })
         
         
-
-        this.START_BUTTON = document.getElementById("start-button");
-        this.X_BUTTON = document.getElementById("x-character");
-        this.O_BUTTON = document.getElementById("o-character");
-
         
 
         
-
-        this.X_BUTTON.addEventListener("click", () => {
-            this.player = 'x';
-            this.computer = "o";
-        });
-
-        this.O_BUTTON.addEventListener("click", () => {
-            this.player = 'o';
-            this.computer = "x";
-        });
-
-        this.START_BUTTON.addEventListener("click", () => {
-            this.createItems();
-        });
 
 
         this.root = document.getElementById("game");
@@ -75,6 +62,8 @@ class Board {
         this.items = [];
         
         this.spots;
+
+        this.createItems();
 
 
         
@@ -161,6 +150,11 @@ class Board {
         }
         else if (this.DIFFICULTY == "hard") {
             // unbeatable move
+            let AI_move = this.bestMove();
+            mooo = AI_move;
+            this.items[mooo.index].innerHTML = this.computer;
+        }
+        else {
             let AI_move = this.bestMove();
             mooo = AI_move;
             this.items[mooo.index].innerHTML = this.computer;
@@ -450,4 +444,37 @@ class Board {
     }
 }
 
-let BOARD = new Board();
+var Brd;
+
+var player;
+var computer;
+
+
+START_BUTTON = document.getElementById("start-button");
+X_BUTTON = document.getElementById("x-character");
+O_BUTTON = document.getElementById("o-character");
+
+        
+
+        
+
+X_BUTTON.addEventListener("click", () => {
+    player = 'x';
+    computer = "o";
+});
+
+O_BUTTON.addEventListener("click", () => {
+    player = 'o';
+    computer = "x";
+});
+
+START_BUTTON.addEventListener("click", () => {
+    Brd = new Board(player, computer);
+});
+
+document.getElementById("restart").addEventListener('click', () => {
+    Brd.root.innerHTML = "";
+    Brd =  null;
+    Brd = new Board();
+
+});
