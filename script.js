@@ -475,6 +475,6 @@ START_BUTTON.addEventListener("click", () => {
 document.getElementById("restart").addEventListener('click', () => {
     Brd.root.innerHTML = "";
     Brd =  null;
-    Brd = new Board();
+    
 
 });
