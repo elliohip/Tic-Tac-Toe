@@ -84,6 +84,8 @@ class Board {
 
     
 
+    
+
     availableSpots() {
 
         let avail = [];
@@ -107,15 +109,37 @@ class Board {
             p.style.border = "solid black 1px";
             this.items[i] = p;
 
-            p.addEventListener('click', (e) => {
+            p.classList.add("piece");
+
+            var clickFunction = (e) => {
                 
-                this.move(e);
-            });
+                if (e.target.innerHTML == "") {
+                    this.move(e);
+                }
+                
+                // this.removeListener(p)
+
+            }
+
+            p.addEventListener('click', clickFunction);
+
+            
 
             this.root.appendChild(p);
         }
 
         
+    }
+
+    removeListener(target) {
+
+        let inner = target.innerHTMl;
+
+        let newNode = target.cloneNode();
+
+        newNode.innerHTML = inner;
+
+        target.parentNode.replaceChild(newNode, target);
     }
 
     move(e) {

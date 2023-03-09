@@ -44,6 +44,8 @@ main {
     grid-template-rows: repeat(3, minmax(100px, 1fr));
 
     border-radius: 10%;
+
+    font-size: 30px;
     
 }
 
