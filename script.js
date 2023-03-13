@@ -24,7 +24,9 @@ class Piece {
 }
 
 class Board {
-    constructor(p, c) {
+
+
+    constructor(p, c, isTest) {
 
         if (p == null || c == null || p == undefined || c == undefined) {
             console.log("no player chosen");
@@ -48,8 +50,15 @@ class Board {
                 this.DIFFICULTY = e.target.innerHTML.toLowerCase();
                 console.log("difficulty: " + this.DIFFICULTY);
 
+                console.log(e.target.innerHTML);
+
             });
         })
+
+
+        
+
+        
         
         
         
@@ -65,8 +74,50 @@ class Board {
 
         this.createItems();
 
+        /*
+        Runs a test
+        */
+        if (isTest == true) {
+
+            this.player = "x";
+            this.computer = "o";
+
+            let moveCount = 0;
+            for (let i = 0; i < 10; i++) {
+                let AI_move = this.minimax(this.items, 0, false);
+                this.items[AI_move.index].innerHTML = "x";
+                let AI_move_2 = this.bestMove();
+                if (moveCount != 4) {
+                    this.items[AI_move_2.index].innerHTML = "o";
+                }
+                moveCount++;
+
+                if (this.checkWin(this.items) != 0) {
+                    console.log("win or loss");
+                    this.clearBoard(this.items);
+                    moveCount = 0;
+                }
+                if (this.availableSpots().length == 0) {
+                    this.clearBoard(this.items);
+                    moveCount = 0;
+                    console.log("tie");
+                }
+            }
+        }
+
 
         
+    }
+
+
+    /**
+     * 
+     * clears the board (used during the test only)
+     */
+    clearBoard(items) {
+        for (let i = 0; i < items.length; i++) {
+            items[i].innerHTML = "";
+        }
     }
 
     
@@ -74,7 +125,7 @@ class Board {
     
 
     
-
+    
     availableSpots() {
 
         let avail = [];
@@ -106,7 +157,7 @@ class Board {
                     this.move(e);
                 }
                 
-                // this.removeListener(p)
+   
 
             }
 
@@ -120,16 +171,7 @@ class Board {
         
     }
 
-    removeListener(target) {
-
-        let inner = target.innerHTMl;
-
-        let newNode = target.cloneNode();
-
-        newNode.innerHTML = inner;
-
-        target.parentNode.replaceChild(newNode, target);
-    }
+    
 
     move(e) {
 
@@ -216,6 +258,13 @@ class Board {
 
     }
 
+    /**
+     * 
+     * @param {Array} board 
+     * @param {Number} depth 
+     * @param {boolean} isMaximizing 
+     * @returns 
+     */
     minimax(board, depth, isMaximizing) {
 
         let av = this.availableSpots();
@@ -456,7 +505,6 @@ O_BUTTON = document.getElementById("o-character");
 
         
 
-        
 
 X_BUTTON.addEventListener("click", () => {
     player = 'x';
@@ -468,9 +516,16 @@ O_BUTTON.addEventListener("click", () => {
     computer = "x";
 });
 
-START_BUTTON.addEventListener("click", () => {
-    Brd = new Board(player, computer);
+document.getElementById("test").addEventListener("click", () => {
+
+    Brd = new Board("x", "o", true);
 });
+
+START_BUTTON.addEventListener("click", () => {
+    Brd = new Board(player, computer, false);
+});
+
+
 
 document.getElementById("restart").addEventListener('click', () => {
     Brd.root.innerHTML = "";
