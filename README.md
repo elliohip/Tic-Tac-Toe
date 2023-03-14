@@ -16,5 +16,4 @@ Array implementation of minimax algorithm.
 
 Inspiration for this specific implementation came from : 
 
-https://www.geeksforgeeks.org/finding-optimal-move-in-tic-tac-toe-using-minimax-algorithm-in-game-theory/?ref=rp
-
+Geeks For Geeks. “Minimax Algorithm in Game Theory: Set 4 (Alpha-Beta Pruning).” GeeksforGeeks, GeeksforGeeks, 16 Jan. 2023, https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/. 
