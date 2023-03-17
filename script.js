@@ -260,10 +260,14 @@ class Board {
 
     /**
      * 
-     * @param {Array} board 
-     * @param {Number} depth 
-     * @param {boolean} isMaximizing 
-     * @returns 
+     * returns a move with a score, based on the given board state
+     * This algorithm checks every possible move that could be made, and 
+     * decides based on the end states of the board what score the move would have
+     * 
+     * @param {Array} board board object that stores the current state of the game
+     * @param {Number} depth how many moves into / how many function calls have been made using this function
+     * @param {boolean} isMaximizing is the player that is using this turn the "maximizing player", or the AI player
+     * @returns Move
      */
     minimax(board, depth, isMaximizing) {
 
@@ -272,7 +276,7 @@ class Board {
         let move;
 
         /**
-         * checks terminal states
+         * checks terminal / end states
          */
         if (this.checkWin(board) == 1) {
 
@@ -292,6 +296,7 @@ class Board {
             return move;
         }
 
+        // if maximixing, loop through all possible moves
         if (isMaximizing) {
             let bestScore = -Infinity;
 
@@ -340,7 +345,7 @@ class Board {
             }
 
             return move;
-        }
+        } // else, the player's hypothetical move is returned, where it tries to maximze the best move for the player
         else {
             let bestScore = Infinity;
 
