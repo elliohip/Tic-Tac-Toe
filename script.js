@@ -26,7 +26,7 @@ class Piece {
 class Board {
 
 
-    constructor(p, c, isTest) {
+    constructor(p, c, isTest, diff) {
 
         if (p == null || c == null || p == undefined || c == undefined) {
             console.log("no player chosen");
@@ -42,20 +42,12 @@ class Board {
 
         let difficulty;
 
-        this.DIFFICULTY;
+        this.DIFFICULTY = diff;
 
-        choices.forEach((curr) => {
-            curr.addEventListener("click", (e) => {
-                
-                this.DIFFICULTY = e.target.innerHTML.toLowerCase();
-                console.log("difficulty: " + this.DIFFICULTY);
+        
+        
 
-                console.log(e.target.innerHTML);
-
-            });
-        })
-
-
+        
         
 
         
@@ -108,6 +100,8 @@ class Board {
 
         
     }
+
+    
 
 
     /**
@@ -508,7 +502,19 @@ START_BUTTON = document.getElementById("start-button");
 X_BUTTON = document.getElementById("x-character");
 O_BUTTON = document.getElementById("o-character");
 
-        
+let difficulty = null;
+
+function difficulty_listener(e) {
+    difficulty = e.target.innerHTML.toLowerCase();
+}
+
+document.getElementById("easy").addEventListener("click", difficulty_listener);
+document.getElementById("medium").addEventListener("click", difficulty_listener);
+document.getElementById("hard").addEventListener("click", difficulty_listener);
+document.getElementById("test").addEventListener("click", difficulty_listener);
+
+
+
 
 
 X_BUTTON.addEventListener("click", () => {
@@ -523,11 +529,11 @@ O_BUTTON.addEventListener("click", () => {
 
 document.getElementById("test").addEventListener("click", () => {
 
-    Brd = new Board("x", "o", true);
+    Brd = new Board("x", "o", true, difficulty);
 });
 
 START_BUTTON.addEventListener("click", () => {
-    Brd = new Board(player, computer, false);
+    Brd = new Board(player, computer, false, difficulty);
 });
 
 
