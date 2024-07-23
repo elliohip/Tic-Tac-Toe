@@ -7,14 +7,28 @@ header {
 
 main {
     display: grid;
-    grid-template-rows: 1fr 1fr 4fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 
     background-color: rgb(30, 134, 172);
 
 }
 
+.restart-button {
+    max-width: 250px;
+    max-height: 250px;
+    background-color: aquamarine;
+    align-self: center;
+    justify-self: center;
+    padding: 20px;
+}
+
 .choose-character {
+    display: flex;
     background-color:tan;
+    justify-self: center;
+    width: 100%;
+    align-items: center;
+    flex-flow: column;
 }
 
 #game {
